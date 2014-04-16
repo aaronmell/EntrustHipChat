@@ -34,24 +34,34 @@
 						{
 							using (var conn = new SqlConnection(instance.Entrust.ConnectionString))
 							{
-								conn.Open();
-
-								using (var comm = new SqlCommand("select COUNT(u.[user_id]) from dbo.users u WITH (NOLOCK)", conn))
+								try
 								{
-									using (var reader = comm.ExecuteReader(CommandBehavior.SingleResult))
-									{
-										if (reader.Read())
-										{
-											var columns = new object[reader.FieldCount];
-											reader.GetValues(columns);
-											userCount = (int)columns[0];
-										}
+									conn.Open();
 
-										reader.Close();
+									using (var comm = new SqlCommand("select COUNT(u.[user_id]) from users u WITH (NOLOCK)", conn))
+									{
+										using (var reader = comm.ExecuteReader(CommandBehavior.SingleResult))
+										{
+											if (reader.Read())
+											{
+												var columns = new object[reader.FieldCount];
+												reader.GetValues(columns);
+												userCount = (int)columns[0];
+											}
+
+											reader.Close();
+										}
 									}
 								}
-
-								conn.Close();
+								catch (Exception)
+								{
+									Console.WriteLine("PROBLEM CONNECTING TO: {0}", instance.Entrust.ConnectionString);
+									throw;
+								}
+								finally
+								{
+									conn.Close();
+								}
 							}
 
 							if (!userCount.HasValue)
@@ -83,11 +93,11 @@
 								if (instance.HipChat != null) 
 									HipChatClient.SendMessage(instance.HipChat.HipChatApiKey, instance.HipChat.HipChatRoomName, "EntrustBot", message, true, HipChatClient.BackgroundColor.yellow);
 
-								if (instance.PagerDuty != null && !pagerDutyAlerts.ContainsKey(instance.Name))
-								{
-									PostPagerDutyAlert(instance.PagerDuty.GenericServiceApiKey, message, userCount.Value);
-									pagerDutyAlerts[instance.Name] = "WARN";
-								}
+								//if (instance.PagerDuty != null && !pagerDutyAlerts.ContainsKey(instance.Name))
+								//{
+								//    PostPagerDutyAlert(instance.PagerDuty.GenericServiceApiKey, message, userCount.Value);
+								//    pagerDutyAlerts[instance.Name] = "WARN";
+								//}
 								
 								allOkay = false;
 							}
