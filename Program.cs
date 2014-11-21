@@ -1,4 +1,13 @@
-﻿namespace EntrustHipChat
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="Copyright Sean McElroy">
+//   Copyright Sean McElroy
+// </copyright>
+// <summary>
+//   Defines the primary class and entry point for running the console application
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace EntrustHipChat
 {
 	using System;
 	using System.Collections.Generic;
@@ -74,7 +83,7 @@
 							}
 							else if (userCount >= instance.Entrust.LicenseMax)
 							{
-								var message = string.Format("The license count for {0} is {1:N0}!  INSTANCE MAY BE LOCKED FOR NEW REGISTRATIONS!  The limit is {2:N0}.", instance.Name, userCount.Value, instance.Entrust.LicenseMax);
+								var message = string.Format("CAL count for {0} is {1:N0}!  INSTANCE MAY BE LOCKED FOR NEW REGISTRATIONS!  Limit is {2:N0}.", instance.Name, userCount.Value, instance.Entrust.LicenseMax);
 
 								if (instance.HipChat != null) 
 									HipChatClient.SendMessage(instance.HipChat.HipChatApiKey, instance.HipChat.HipChatRoomName, "EntrustBot", message, true, HipChatClient.BackgroundColor.red);
@@ -89,7 +98,7 @@
 							}
 							else if (userCount >= instance.Entrust.LicenseWarn)
 							{
-								var message = string.Format("The license count for {0} is {1:N0}.  This is above the warning threshold of {2:N0}.  The limit is {3:N0}.", instance.Name, userCount.Value, instance.Entrust.LicenseWarn, instance.Entrust.LicenseMax);
+								var message = string.Format("CAL count for {0} is {1:N0}.  Above warning threshold of {2:N0}.  Limit is {3:N0}.", instance.Name, userCount.Value, instance.Entrust.LicenseWarn, instance.Entrust.LicenseMax);
 								if (instance.HipChat != null) 
 									HipChatClient.SendMessage(instance.HipChat.HipChatApiKey, instance.HipChat.HipChatRoomName, "EntrustBot", message, true, HipChatClient.BackgroundColor.yellow);
 
@@ -101,6 +110,8 @@
 								
 								allOkay = false;
 							}
+							else
+								Console.WriteLine("CAL count for {0} is {1:N0}.  Limit is {2:N0}.", instance.Name, userCount.Value, instance.Entrust.LicenseMax);
 						}
 						catch (Exception e)
 						{

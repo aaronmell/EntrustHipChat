@@ -3,12 +3,12 @@
 namespace EntrustHipChat
 {
     /// <summary>
-    /// Configuration information for PagerDuty
+    /// Configuration information for HipChat
     /// </summary>
     public class HipChatConfigurationElement : ConfigurationElement
     {
         /// <summary>
-        /// The API key of the PagerDuty 'generic service' to dispatch alerts to
+		/// The API key of the HipChat 'generic service' to dispatch alerts to
         /// </summary>
 		[ConfigurationProperty("hipChatAPIKey", IsRequired = true)]
         public string HipChatApiKey
@@ -18,7 +18,7 @@ namespace EntrustHipChat
         }
 
         /// <summary>
-        /// The message to send to PagerDuty on alert
+		/// The message to send to HipChat on alert
         /// </summary>
         [ConfigurationProperty("hipChatRoomName", IsRequired = true)]
 		public string HipChatRoomName
