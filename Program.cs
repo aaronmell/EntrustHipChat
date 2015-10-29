@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace EntrustHipChat
 {
 	using System;
@@ -30,6 +32,9 @@ namespace EntrustHipChat
 			var pagerDutyAlerts = new Dictionary<string, string>();
 
 			var allOkay = true;
+
+			foreach (var hc in entrustHipChatConfigurationSection.Instances.Select(p => new { p.HipChat.HipChatApiKey, p.HipChat.HipChatRoomName }).Distinct())
+				HipChatClient.SendMessage(hc.HipChatApiKey, hc.HipChatRoomName, "EntrustBot", "EntrustBot has started", true, HipChatClient.BackgroundColor.purple);
 
 			while (true)
 			{
