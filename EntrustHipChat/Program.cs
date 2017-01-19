@@ -69,7 +69,7 @@ namespace EntrustHipChat
 								}
 								catch (Exception ex)
 								{
-									var message = string.Format("EntrustBot encountered an exception loading the DB. Exception is {0}", ex);
+									var message = string.Format("EntrustBot encountered an exception loading the DB for {1}. Exception is {0}", ex, instance.Name);
 
 									if (instance.HipChat != null)
 										HipChatClient.SendMessage(instance.HipChat.HipChatApiKey, instance.HipChat.HipChatRoomName, "EntrustBox", message, true, HipChatClient.BackgroundColor.red);
