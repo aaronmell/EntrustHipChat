@@ -67,8 +67,13 @@ namespace EntrustHipChat
 										}
 									}
 								}
-								catch (Exception)
+								catch (Exception ex)
 								{
+									var message = string.Format("EntrustBot encountered an exception loading the DB. Exception is {0}", ex);
+
+									if (instance.HipChat != null)
+										HipChatClient.SendMessage(instance.HipChat.HipChatApiKey, instance.HipChat.HipChatRoomName, "EntrustBox", message, true, HipChatClient.BackgroundColor.red);
+
 									Console.WriteLine("PROBLEM CONNECTING TO: {0}", instance.Entrust.ConnectionString);
 									throw;
 								}
